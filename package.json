@@ -1,0 +1,26 @@
+{
+  "name": "zerial",
+  "version": "1.0.0",
+  "description": "Simplifying interfaces",
+  "main": "src/index.ts",
+  "directories": {
+    "test": "test"
+  },
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/tetranoir/zerial.git"
+  },
+  "keywords": [
+    "typescript",
+    "serialization"
+  ],
+  "author": "tetranoir",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/tetranoir/zerial/issues"
+  },
+  "homepage": "https://github.com/tetranoir/zerial#readme"
+}
