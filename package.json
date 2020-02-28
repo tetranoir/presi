@@ -2,12 +2,14 @@
   "name": "zerial",
   "version": "1.0.0",
   "description": "Simplifying interfaces",
-  "main": "src/index.ts",
+  "main": "dist/index.js",
+  "types": "dist/index.d.ts",
   "directories": {
     "test": "test"
   },
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "fix": "tslint --fix **/**.ts"
   },
   "repository": {
     "type": "git",
@@ -22,5 +24,12 @@
   "bugs": {
     "url": "https://github.com/tetranoir/zerial/issues"
   },
-  "homepage": "https://github.com/tetranoir/zerial#readme"
+  "homepage": "https://github.com/tetranoir/zerial",
+  "devDependencies": {
+    "ts": "^0.2.2",
+    "tsd": "^0.11.0"
+  },
+  "dependencies": {
+    "typescript": "^3.8.2"
+  }
 }

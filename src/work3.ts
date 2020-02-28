@@ -14,11 +14,6 @@ interface O<T> {
     [k: string]: F<T>;
 }
 
-// I describes the generic interface
-class I {
-    [k: string]: any;
-}
-
 // AR describes an array of functions' return type
 type AR<T> = T extends Array<F<infer U>> ? U : never;
 
@@ -80,8 +75,18 @@ function boolean(val: boolean) {
     if (typeof val !== 'boolean') { throw new Error(`Value ${val} is not a boolean`); }
     return val;
 }
+function optional<T extends F<any>>(typ: T) {
+    function optional(val: ReturnType<T>) {
+        return typ(val);
+    }
+    optional[opSymbol] = true;
+    return optional;
+}
 
-const valAsLiteral = <T>(typ: T) => (val: T) => {
+type Narrowable = string | number | boolean | symbol |
+  object | {} | void | null | undefined;
+const narrow = <T extends Narrowable>(arg: T) => arg;
+const valAsLiteral = <T extends Narrowable>(typ: T) => (val: T) => {
     if (typ !== val) {
         throw new Error(`Value ${val} is not the same as ${typ}`);
     }
@@ -98,8 +103,8 @@ class Z {
     static number: F<number> = number;
     static boolean: F<boolean> = boolean;
     static literal = valAsLiteral;
-    static optional = optional as opZ;
-    static o = optional as opZ;
+    static optional = optional;
+    static o = Z.optional;
     static array = <T extends F<any>>(typ: T) => (ary) => {
         if (!Array.isArray(ary)) {
             throw new Error(`${ary} is not an array`);
@@ -108,7 +113,6 @@ class Z {
     }
     static object = <T extends O<any>>(typeobj: T) => <S extends RT<T>>(obj: S) => {
         Object.keys(typeobj).forEach((k) => {
-            debugger;
             if (typeobj[k][opSymbol]) {
                 return;
             }
@@ -139,8 +143,8 @@ class Z {
         }
         return v as AR<T>; // dumb that you have to explicitly type it
     }
-    static tuple = <T extends Array<F<any>> & { '0': F<any> }>(typ: T) => (ary) => {
-        const array = tuplize(ary);
+    static tuple = <T extends Array<F<any>> & { '0': F<any> }>(typ: T) => (array) => {
+        // const array = tuplize(ary);
         if (typ.length !== array.length) {
             throw new Error(`Value ${array} is not a tuple of size ${typ.length}`);
         }
@@ -156,44 +160,43 @@ type TZ = typeof Z;
 // KZ describes the keys of Z
 type KZ = keyof TZ;
 
-// Finds return type of function, but not if its not a function
-type DefReturnType<T> = T extends (...k: any[]) => any ?  ReturnType<T> : never;
-
 type static_test = keyof typeof Z;
-type static_test2 = keyof Z;
 
 // optional is a mess :(
-type opCombinator<T extends F<any>> = (val?: any) => (R<T> | undefined);
-type opWrapper = <T extends F<any>>(typ: T) => opCombinator<T>;
-// Not exactly correct because the return types of 2 arity functions are fns
-type opZ = {[k in KZ]: opCombinator<F<DefReturnType<TZ[k]>>>} & opWrapper;
-function optional<T extends (F<any>|F<F<any>>)>(typ: T) {
-    // 2 arity type, lift typ
-    if (typeof typ() === 'function') {
-        return (typeVal) => {
-            function optional2(val?: any): R<T> | undefined { // dumb that you have write out the ret val
-                return val && typ(typeVal)(val);
-            }
-            optional2[opSymbol] = true;
-            return optional2;
-        };
-    }
+// Finds return type of function, but not if its not a function
+// type DefReturnType<T> = T extends (...k: any[]) => any ?  ReturnType<T> : never;
 
-    // 1 arity type
-    function optional1(val?: any): R<T>|undefined { // dumb that you have write out the ret val
-        return val && typ(val);
-    }
-    optional1[opSymbol] = true;
-    return optional;
-}
-Object.assign(
-    optional,
-    Object.entries(Z).reduce(
-        (a, [k, v]) => ({ ...a, [k]: optional(v) }),
-        {},
-    ) as TZ,
-);
-debugger;
+// type opCombinator<T extends F<any>> = (val?: any) => (R<T> | undefined);
+// type opWrapper = <T extends F<any>>(typ: T) => opCombinator<T>;
+// // Not exactly correct because the return types of 2 arity functions are fns
+// type opZ = {[k in KZ]: opCombinator<F<DefReturnType<TZ[k]>>>} & opWrapper;
+// function optional<T extends (F<any>|F<F<any>>)>(typ: T) {
+//     // 2 arity type, lift typ
+//     if (typeof typ() === 'function') {
+//         return (typeVal) => {
+//             function optional2(val?: any): R<T> | undefined { // dumb that you have write out the ret val
+//                 return val && typ(typeVal)(val);
+//             }
+//             optional2[opSymbol] = true;
+//             return optional2;
+//         }
+//     }
+
+//     // 1 arity type
+//     function optional1(val?: any): R<T>|undefined { // dumb that you have write out the ret val
+//         return val && typ(val);
+//     }
+//     optional1[opSymbol] = true;
+//     return optional;
+// }
+// Object.assign(
+//     optional,
+//     Object.entries(Z).reduce(
+//         (a, [k, v]) => ({ ...a, [k]: optional(v) }),
+//         {},
+//     ) as TZ,
+// );
+
 // var optionalFn: opWrapper = <T extends F<any>>(typ: T) => {
 //     const id: (val?: any) => (R<T>|undefined) = val => val && typ(val); // dumb that you have write out the ret val
 //     id[opSymbol] = true;
@@ -239,7 +242,7 @@ interface Base {
 /*
     Cls - an class of type T
 */
-function Interface<T extends G>(Cls: Constructor<T>) {
+function I<T extends G>(Cls: Constructor<T>) {
     const clsObj = Z.object(new Cls);
     class C {
         constructor(val: RT<T>) {
@@ -250,61 +253,47 @@ function Interface<T extends G>(Cls: Constructor<T>) {
     return C as Constructor<RT<T>>;
 }
 
-class AI extends Interface(class _ extends G {
+class AI extends I(class _ extends G {
     a = Z.string;
     b = Z.oneOf(Z.number, Z.boolean);
     c = Z.literal('ff');
-    d = Z.o.literal('z');
+    d = Z.o(Z.literal('z'));
+    e = Z.literal(true);
+    f = Z.tuple([Z.number]);
 }) { }
-const ai2 = new AI({ a: 'f', b: true, c: 'ff'});
+const ai2 = new AI({ a: 3, b: 3, c: 'ff', d: 'f', e: '' });
+const ai1: AI = {
+    a: '3',
+    b: 4,
+    c: 'ff',
+    d: 4,
+    e: true,
+    f: ['f'],
+};
 console.log(ai2);
 window.AI = AI;
-// make this work
-/*
-    class A extends Interface(class {
-        a = Z.string;
-    }) {}
-    data = {a: 'a'};
-    const a = new A({a: 'a'});
-*/
-
-const a: A = {
-    a: 'f',
-    b: 4,
-    c: ['a'],
-    d: { a: 5 },
-    e: ['f'],
-    g: ['f', 5],
-    h: 'f',
-    i: {
-        a: ['i', 'z'],
-    },
-    j: undefined,
-    k: undefined,
-    l: [],
-};
 
 const tuplize_test = tuplize([Z.string, Z.number]);
 
-interface IA {
-    a: string;
-    b: number;
-    c: string[];
-    d: { a: number };
-    e: string | number;
-}
+let narrow_test = narrow('c');
 
 /*
 Requirements
     1. Define structure once
         (or have strong typechecking between mulitple declarations)
         (or have one generate the other, in code)
-    2. Nearly free deserialization
-    3. Can take output from JSON.parse
-    4. Runtime type checking
+    2. Nearly free deserialization.
+    3. Can take output from JSON.parse.
+    4. Runtime type checking.
 
 Technical Notes
     * Classes give free structure and type.
     * Structure once means the means of deserialization needs
-        incorporated in the declaration
+        incorporated in the declaration.
+
+Limitations
+    * TypeScript cannot create types from primatives, so no "literals"
+        in type checking.
+    * Due to converting a user created interface to generic then
+        back again, extra keys will not be type checked.
 */
