@@ -1,8 +1,8 @@
 # Presi
-Presi is a libary that lets you build your interfaces and get out of the box
+Presi is a libary that lets you build interfaces and get out of the box
 runtime type checking and JSON deserialization. Presi was inspired by DRY and
-Scala class objects. This libary lets you only have to define an interface once,
-and will allow you to: 1. Use the defined interface to statically type check
+Scala class objects to let you only define an interface once but still allow
+you to: 1. Use the defined interface to statically type check
 objects in your code, 2. Check the type of arbitrary objects that come from
 unsafe IO sources (e.g. user input).
 
