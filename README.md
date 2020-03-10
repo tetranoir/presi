@@ -17,13 +17,13 @@ npm install --save presi
 
 ## How to Use
 
-```javascript
+```typescript
 import {G, I, Z} from 'presi';
 ```
 
 When you need to define an interface, i.e.
 
-```
+```typescript
 interface User {
   name: string;
   age: number;
@@ -32,7 +32,7 @@ interface User {
 
 instead do
 
-```
+```typescript
 class User extends I(class IUser extends G {
   name = Z.string;
   age = Z.number;
@@ -75,27 +75,39 @@ interface _ {
 ```
 
 ## Z
-Z which stands for deserializer is a set of 1 and 2 arity functions that either
-check that it's argument is a primative or, when given a type spec, checks that
-it's argument follows that spec.
+Z, which stands for deserializer, is a set of 1 and 2 arity functions that
+either check that it's argument is a primative or, when given a type spec,
+checks that it's argument follows that spec.
 
 ```typescript
 class objectDef extends I(class IobjectDef extends G {
   undefinedValue = Z.undefined;
+
   nullValue = Z.null;
+
   stringValue = Z.string;
+
   numberValue = Z.number;
+
   booleanValue = Z.boolean;
+
   literalKeyValue = Z.literal('Key');
+
   literal100Value = Z.literal(100);
+
   optionalStringValue = Z.optional(Z.string);
+
   // Z.o is a shorthand for Z.optional
   optionalLiteralPValue = Z.o(Z.literal('P'));
+
   arrayOfNumbers = Z.array(Z.number);
+
   // { z: { z?: string } }
   nestedObject = Z.object({ z: Z.Object({z: Z.optional(Z.string) }) });
+
   // string | number
   stringOrNumber = Z.oneOf(Z.string, Z.number);
+
   // [string, number, string[]]
   tripleTuple = Z.tuple([Z.string, Z.number, Z.array(Z.string)]);
 }) {}
