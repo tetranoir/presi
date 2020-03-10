@@ -38,14 +38,14 @@ class User extends I(class IUser extends G {
   age = Z.number;
 }) {}
 ```
-`User` is the interface with `name` and `age`.
+* `User` is the interface with `name` and `age`.
 
-`I` is a mixin which creates the deserialization and type for `User`.
+* `I` is a mixin which creates the deserialization and type for `User`.
 
-`IUser` is the class which contains the type converter functions. This class can
+* `IUser` is the class which contains the type converter functions. This class can
 be named anything.
 
-`G` is the base class that I accepts.
+* `G` is the base class that I accepts.
 
 From there you can use `User` like a regular interface. But additionally, you
 can use `new User(your unknown object)` which creates a `User` object if given
@@ -80,6 +80,7 @@ either check that it's argument is a primative or, when given a type spec,
 checks that it's argument follows that spec.
 
 ```typescript
+import {G, I, Z} from 'presi';
 class objectDef extends I(class IobjectDef extends G {
   undefinedValue = Z.undefined;
 
