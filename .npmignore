@@ -1,2 +1,10 @@
-tsconfig.json
+_*
+
+node_modules
+test
 src
+types
+
+tsconfig.json
+tslint.json
+jasmin.json
