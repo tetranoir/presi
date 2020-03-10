@@ -70,6 +70,7 @@ const a2: A = {
       a: [3],
     },
   },
+  z: 4,
 };
 
 // $ExpectType A

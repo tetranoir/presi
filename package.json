@@ -1,5 +1,5 @@
 {
-  "name": "zerial",
+  "name": "Presi",
   "version": "1.0.0",
   "description": "Simplifying interfaces",
   "main": "dist/index.js",
@@ -14,7 +14,7 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/tetranoir/zerial.git"
+    "url": "git+https://github.com/tetranoir/presi.git"
   },
   "keywords": [
     "typescript",
@@ -23,9 +23,9 @@
   "author": "tetranoir",
   "license": "MIT",
   "bugs": {
-    "url": "https://github.com/tetranoir/zerial/issues"
+    "url": "https://github.com/tetranoir/presi/issues"
   },
-  "homepage": "https://github.com/tetranoir/zerial",
+  "homepage": "https://github.com/tetranoir/presi",
   "devDependencies": {
     "@types/jasmine": "^3.5.8",
     "dtslint": "^3.3.0",

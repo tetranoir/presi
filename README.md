@@ -1,21 +1,24 @@
-# Zerial
-Zerial is a libary that lets you build your interfaces and get out of the box
-runtime type checking and deserialization.
+# Presi
+Presi is a libary that lets you build your interfaces and get out of the box
+runtime type checking and JSON deserialization. Presi was inspired by DRY and
+Scala class objects. This libary lets you only have to define an interface once,
+and will allow you to: 1. Use the defined interface to statically type check
+objects in your code, 2. Check the type of arbitrary objects that come from
+unsafe IO sources (e.g. user input).
+
+## How to use
 
 ## Requirements of the project
-    1. Define structure once
-        (or have strong typechecking between mulitple declarations)
-        (or have one generate the other, in code)
+    1. Structure once philosophy.
     2. Nearly free deserialization.
     3. Can take output from JSON.parse.
     4. Runtime type checking.
     5. Usable defined types in TypeScript.
 
-## Technical Notes
-    * Classes give free structure and type.
-    * Structure once means the means of deserialization needs
+### Technical Notes
+    * Classes give free structure, type, and function.
+    * "Structure once" means the means of deserialization needs
         incorporated in the declaration.
-
 ### Limitations
     * Due to converting a user created interface to generic then
-        back again, extra keys will not be type checked.
+        back again, extraneous keys will not be type checked.

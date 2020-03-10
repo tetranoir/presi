@@ -81,7 +81,7 @@ function optional<T extends F<any>>(typ: T) {
 /** Checks if value is a specific value */
 const valAsLiteral = <T extends Narrowable|undefined|null>(typ: T) => (val: T) => {
   if (typ !== val) {
-    throw `Value ${val} is not the same as ${typ}`;
+    throw `Value ${val} is not ${typ}`;
   }
   return val;
 };
