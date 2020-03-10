@@ -73,13 +73,13 @@ function boolean(val: boolean) {
 function optional<T extends F<any>>(typ: T) {
   // tslint:disable-next-line
   function optional(val: ReturnType<T>) {
-    return typ(val);
+    return typ(val) || undefined;
   }
-  return optional;
+  return optional as F<ReturnType<T>|undefined>; // dumb you have to explicitly type it
 }
 
 /** Checks if value is a specific value */
-const valAsLiteral = <T extends Narrowable>(typ: T) => (val: T) => {
+const valAsLiteral = <T extends Narrowable|undefined|null>(typ: T) => (val: T) => {
   if (typ !== val) {
     throw `Value ${val} is not the same as ${typ}`;
   }

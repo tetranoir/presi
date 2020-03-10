@@ -8,7 +8,8 @@
     "test": "test"
   },
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
+    "test": "jasmine-ts --config=jasmine.json",
+    "dtslint": "dtslint types",
     "fix": "tslint --fix **/**.ts"
   },
   "repository": {
@@ -26,7 +27,13 @@
   },
   "homepage": "https://github.com/tetranoir/zerial",
   "devDependencies": {
+    "@types/jasmine": "^3.5.8",
+    "dtslint": "^3.3.0",
+    "jasmine": "^3.5.0",
+    "jasmine-spec-reporter": "^4.2.1",
+    "jasmine-ts": "^0.3.0",
     "ts": "^0.2.2",
+    "ts-node": "^8.6.2",
     "tsd": "^0.11.0"
   },
   "dependencies": {

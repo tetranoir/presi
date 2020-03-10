@@ -3,7 +3,7 @@ export type Primative =
   string | number | boolean | symbol | void | null | undefined;
 
 /** Empty container types */
-export type Container = object | {} | [];
+export type Container = object | {} | any[];
 
 /** Types that can be narrowed into. */
 export type Narrowable = Primative & Container;
