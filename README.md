@@ -1,4 +1,4 @@
-# Presi
+# Presi ![](https://github.com/adam-p/markdown-here/raw/master/src/common/images/icon48.png)
 Presi is a libary that lets you build interfaces and get out of the box
 runtime type checking and JSON deserialization. Presi was inspired by DRY,
 prop-types, and Scala class objects to let you only define an interface once

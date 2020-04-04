@@ -1,4 +1,4 @@
-import {tuplize, Narrowable, Constructor, Tuplize} from './magic';
+import {Constructor, Narrowable, Tuplize, tuplize} from './magic';
 
 /** F describes a single arity function. */
 export type F<T> = (a?: any) => T;

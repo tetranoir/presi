@@ -1,6 +1,6 @@
 {
   "name": "presi",
-  "version": "1.0.1",
+  "version": "1.0.2",
   "description": "Simplifying interfaces",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
@@ -10,7 +10,9 @@
   "scripts": {
     "test": "jasmine-ts --config=jasmine.json",
     "dtslint": "dtslint types",
-    "fix": "tslint --fix **/**.ts"
+    "fix": "tslint --fix **/**.ts",
+    "publish": "npm publish",
+    "compile": "tsc --listEmittedFiles"
   },
   "repository": {
     "type": "git",
