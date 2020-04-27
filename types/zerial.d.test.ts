@@ -75,3 +75,11 @@ const a2: A = {
 
 // $ExpectType A
 const a3: A = a2;
+
+const a4: Z.z = Z.string;
+
+// $ExpectError
+const a5: Z.z = 5;
+
+// $ExpectError
+const a6: Z.z = (f: string) => console.log(f);

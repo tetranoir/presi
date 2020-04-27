@@ -82,32 +82,41 @@ checks that it's argument follows that spec.
 ```typescript
 import {G, I, Z} from 'presi';
 class objectDef extends I(class IobjectDef extends G {
-  undefinedValue = Z.undefined;
-
-  nullValue = Z.null;
-
+  // string
   stringValue = Z.string;
 
+  // number
   numberValue = Z.number;
 
+  // boolean
   booleanValue = Z.boolean;
 
+  // 'Key'
   literalKeyValue = Z.literal('Key');
 
+  // 100
   literal100Value = Z.literal(100);
 
+  // string | undefined
   optionalStringValue = Z.optional(Z.string);
 
-  // Z.o is a shorthand for Z.optional
+  // 'P' | undefined (Z.o is shorthand for Z.optional)
   optionalLiteralPValue = Z.o(Z.literal('P'));
 
+  // number[]
   arrayOfNumbers = Z.array(Z.number);
+
+  // [number, number]
+  tupleNumNum = Z.tuple([Z.number, Z.number]);
 
   // { z: { z?: string } }
   nestedObject = Z.object({ z: Z.Object({z: Z.optional(Z.string) }) });
 
   // string | number
   stringOrNumber = Z.oneOf(Z.string, Z.number);
+
+  // number | null
+  numberOrNull = Z.oneOf(Z.number, Z.null);
 
   // [string, number, string[]]
   tripleTuple = Z.tuple([Z.string, Z.number, Z.array(Z.string)]);

@@ -1,6 +1,6 @@
 {
   "name": "presi",
-  "version": "1.0.2",
+  "version": "1.0.3",
   "description": "Simplifying interfaces",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
@@ -9,7 +9,7 @@
   },
   "scripts": {
     "test": "jasmine-ts --config=jasmine.json",
-    "dtslint": "dtslint types",
+    "testtypes": "dtslint types",
     "fix": "tslint --fix **/**.ts",
     "publish": "npm publish",
     "compile": "tsc --listEmittedFiles"
@@ -29,16 +29,16 @@
   },
   "homepage": "https://github.com/tetranoir/presi",
   "devDependencies": {
-    "@types/jasmine": "^3.5.8",
-    "dtslint": "^3.3.0",
+    "@types/jasmine": "^3.5.10",
+    "dtslint": "^3.4.2",
     "jasmine": "^3.5.0",
     "jasmine-spec-reporter": "^4.2.1",
     "jasmine-ts": "^0.3.0",
     "ts": "^0.2.2",
-    "ts-node": "^8.6.2",
+    "ts-node": "^8.9.1",
     "tsd": "^0.11.0"
   },
   "dependencies": {
-    "typescript": "^3.8.2"
+    "typescript": "^3.8.3"
   }
 }

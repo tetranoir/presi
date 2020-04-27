@@ -1,3 +1,5 @@
+import 'jasmine';
+
 import {G, I, Z} from '../src/zerial';
 
 // Test 1
@@ -9,4 +11,8 @@ class A extends I(class _ extends G {
   e = Z.literal(true);
 }) { }
 
-const ai1 = assert(new A({ a: 3, b: 3, c: 'ff', d: 'f', e: '' }));
+describe('Zerial', () => {
+  it('should throw when mismatched input data', () => {
+    expect(() => new A({ a: 3, b: 3, c: 'ff', d: 'f', e: '' })).toThrow();
+  });
+});

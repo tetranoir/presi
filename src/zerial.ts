@@ -144,6 +144,25 @@ export class Z {
 }
 
 /**
+ * All functions of Z can be accessed as Z.z
+ */
+export namespace Z {
+  export type z =
+    | typeof Z.undefined
+    | typeof Z.null
+    | typeof Z.string
+    | typeof Z.number
+    | typeof Z.boolean
+    | typeof Z.literal
+    | typeof Z.optional
+    | typeof Z.array
+    | typeof Z.object
+    | typeof Z.oneOf
+    | typeof Z.tuple
+  ;
+}
+
+/**
  * I is a mixin that takes a class and creates a class that can construct
  * the original class via its constructor, a class factorizer if you will.
  *   @param Cls - a class of type T
