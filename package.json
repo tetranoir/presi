@@ -1,6 +1,6 @@
 {
   "name": "presi",
-  "version": "1.0.3",
+  "version": "1.0.4",
   "description": "Simplifying interfaces",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
