@@ -21,7 +21,7 @@ const keysZ: staticZ[] = [
   'o',
 ];
 
-class A extends I(class _ extends G {
+class A extends I(class extends G {
   a = Z.string;
   b = Z.oneOf(Z.number, Z.boolean);
   c = Z.literal('ff');
@@ -88,3 +88,33 @@ const a5: Z.z = 5;
 const a6: Z.z = (f: string) => console.log(f);
 
 const a7: typeof Z.string = Z.string;
+
+class B extends I(class extends G {
+  b = Z.string;
+}) { }
+
+const b1: B = new B();
+
+// $ExpectError
+const b2: string = new B();
+
+class C extends I(class extends G {
+  c = Z.object(new B());
+}) { }
+
+const c1: C = { c: { b: 'b' } };
+
+// $ExpectError
+const c2: C = { c: { c: 'c' } };
+
+// $ExpectError
+const c3: C = { c: { b: 0 } };
+
+class D extends I(class extends G {
+  d = Z.object(new C());
+}) { }
+
+const d1: D = { d: { c: { b: 'b' }}};
+
+// $ExpectError
+const d2: D = { d: { c: 0 }};

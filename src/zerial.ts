@@ -39,11 +39,6 @@ type RR6<T> = T extends [
     F<infer A6>
   ] ? [A1, A2, A3, A4, A5, A6] : never;
 
-/** G describes the generic class that uses single arity functions as values */
-export class G {
-  [k: string]: F<any>;
-}
-
 /** RT describes an object whose values are the return types of values of T */
 export type RT<T extends O<any>> = {
   [k in keyof T]: ReturnType<T[k]>;
@@ -163,18 +158,29 @@ export namespace Z {
   ;
 }
 
+/** G describes the generic class that uses single arity functions as values */
+export class G {
+  [k: string]: F<any>;
+}
+
 /**
  * I is a mixin that takes a class and creates a class that can construct
- * the original class via its constructor, a class factorizer if you will.
+ * the original class via its constructor, a class factorizer.
  *   @param Cls - a class of type T
  */
 export function I<T extends G>(Cls: Constructor<T>) {
   const clsObj = Z.object(new Cls());
+
   class C {
     constructor(val: RT<T>) {
-      const o = clsObj(val);
-      Object.assign(this, o);
+      // Construct object with shape defined by 'Z types' in T.
+      Object.assign(this, clsObj(val));
     }
   }
+
+  // Assign C with static 'Z type' properties from T.
+  Object.assign(C, Cls);
+
+  // Type cast here because clsObj is object merged with class C.
   return C as Constructor<RT<T>>;
 }

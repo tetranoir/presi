@@ -1,6 +1,6 @@
 /** Javascript primatives */
 export type Primative =
-  string | number | boolean | symbol | void | null | undefined;
+  string | number | boolean | symbol | void | null | undefined | Function;
 
 /** Empty container types */
 export type Container = object | {} | any[];
@@ -20,4 +20,4 @@ export function tuplize<T extends any[] & Tuplize>(array: T): T {
 }
 
 /** Constructor describes a generic constructor interface. */
-export type Constructor<T> = new (...args: any[]) => T;
+export type Constructor<T extends {}> = new (...args: any[]) => T;
