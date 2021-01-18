@@ -143,6 +143,7 @@ export class Z {
   }
 }
 
+// TODO turn https://github.com/microsoft/TypeScript/issues/38207 into a request
 /**
  * All functions of Z can be accessed as Z.z
  */

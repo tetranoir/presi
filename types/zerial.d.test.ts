@@ -5,6 +5,7 @@ import { AR, G, I, Z } from '../src/zerial';
 type AR_test = AR<[typeof Z.string, typeof Z.number]>;
 
 type staticZ = keyof typeof Z;
+// Checks key types
 const keysZ: staticZ[] = [
   'undefined',
   'null',
@@ -52,6 +53,8 @@ const a1: A = {
     b: {
       // $ExpectError
       a: 'f',
+      // Does not error because extra keys are not checked
+      b: 'c',
     },
   },
 };
@@ -83,3 +86,5 @@ const a5: Z.z = 5;
 
 // $ExpectError
 const a6: Z.z = (f: string) => console.log(f);
+
+const a7: typeof Z.string = Z.string;
