@@ -103,12 +103,12 @@ export class Z {
         return;
       }
       if (!(k in obj)) {
-        throw `${obj} does not contain key ${k}`;
+        throw `${JSON.stringify(obj)} does not contain property '${k}'`;
       }
     });
     return Object.entries(obj).reduce((a, [k, v]) => {
       if (!typeobj[k]) {
-        throw `Object includes extra key ${k} not in type object ${typeobj}`;
+        throw `${JSON.stringify(obj)} includes extra property '${k}' not in defined type ${JSON.stringify(typeobj)}`;
       }
       return { ...a, [k]: typeobj[k](v) };
     }, {}) as RT<T>;  // dumb that you have to explicitly type it
