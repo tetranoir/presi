@@ -173,6 +173,7 @@ export function I<T extends G>(def: T) {
 
   class C extends G {
     static _ = clsObj;
+    static _type = def;
     constructor(val: RT<T>) {
       super();
       // Construct object with shape defined by 'Z types' in T.
@@ -180,8 +181,6 @@ export function I<T extends G>(def: T) {
     }
   }
 
-  Object.assign(C, def);
-
-  // Type cast here because clsObj is object merged with class C.
-  return C as Constructor<RT<T>> & {_: typeof clsObj} & T;
+  // Type cast here because clsObj is added to class C.
+  return C as Constructor<RT<T>> & {_: typeof clsObj, _type: T};
 }
