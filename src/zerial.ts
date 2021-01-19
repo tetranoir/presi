@@ -1,4 +1,4 @@
-import {Constructor, Narrowable, Tuplize, tuplize} from './magic';
+import {Constructor, Narrowable, narrow, Tuplize, tuplize} from './magic';
 
 /** F describes a single arity function. */
 export type F<T> = (a?: any) => T;
@@ -168,19 +168,18 @@ export class G {
  * the original class via its constructor, a class factorizer.
  *   @param Cls - a class of type T
  */
-export function I<T extends G>(Cls: Constructor<T>) {
-  const clsObj = Z.object(new Cls());
+export function I<T extends G>(def: T) {
+  const clsObj = Z.object(def);
 
-  class C {
+  class C extends G {
+    static _ = clsObj;
     constructor(val: RT<T>) {
+      super();
       // Construct object with shape defined by 'Z types' in T.
       Object.assign(this, clsObj(val));
     }
   }
 
-  // Assign C with static 'Z type' properties from T.
-  Object.assign(C, Cls);
-
   // Type cast here because clsObj is object merged with class C.
-  return C as Constructor<RT<T>>;
+  return C as Constructor<RT<T>> & {_: typeof clsObj};
 }

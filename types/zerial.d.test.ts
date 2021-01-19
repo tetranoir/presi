@@ -1,5 +1,6 @@
-import { expectAssignable, expectNotAssignable } from 'tsd';
-import { AR, G, I, Z } from '../src/zerial';
+import { AR, I, Z } from '../src/zerial';
+
+/* eslint-disable @typescript-eslint/no-unused-vars */
 
 // $ExpectType string | number
 type AR_test = AR<[typeof Z.string, typeof Z.number]>;
@@ -21,20 +22,20 @@ const keysZ: staticZ[] = [
   'o',
 ];
 
-class A extends I(class extends G {
-  a = Z.string;
-  b = Z.oneOf(Z.number, Z.boolean);
-  c = Z.literal('ff');
-  d = Z.o(Z.literal('z'));
-  e = Z.literal(true);
-  f = Z.o(Z.string);
-  g = Z.array(Z.number);
-  h = Z.object({
+class A extends I({
+  a: Z.string,
+  b: Z.oneOf(Z.number, Z.boolean),
+  c: Z.literal('ff'),
+  d: Z.o(Z.literal('z')),
+  e: Z.literal(true),
+  f: Z.o(Z.string),
+  g: Z.array(Z.number),
+  h: Z.object({
     a: Z.string,
     b: Z.object({
       a: Z.oneOf(Z.number, Z.array(Z.number)),
     }),
-  });
+  }),
 }) { }
 
 const a1: A = {
@@ -73,6 +74,7 @@ const a2: A = {
       a: [3],
     },
   },
+  // $ExpectError
   z: 4,
 };
 
@@ -89,8 +91,8 @@ const a6: Z.z = (f: string) => console.log(f);
 
 const a7: typeof Z.string = Z.string;
 
-class B extends I(class extends G {
-  b = Z.string;
+class B extends I({
+  b: Z.string,
 }) { }
 
 const b1: B = new B();
@@ -98,8 +100,8 @@ const b1: B = new B();
 // $ExpectError
 const b2: string = new B();
 
-class C extends I(class extends G {
-  c = Z.object(new B());
+class C extends I({
+  c: B._,
 }) { }
 
 const c1: C = { c: { b: 'b' } };
@@ -110,8 +112,8 @@ const c2: C = { c: { c: 'c' } };
 // $ExpectError
 const c3: C = { c: { b: 0 } };
 
-class D extends I(class extends G {
-  d = Z.object(new C());
+class D extends I({
+  d: C._,
 }) { }
 
 const d1: D = { d: { c: { b: 'b' }}};

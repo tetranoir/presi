@@ -18,7 +18,7 @@ npm install --save presi
 ## How to Use
 
 ```typescript
-import {G, I, Z} from 'presi';
+import {I, Z} from 'presi';
 ```
 
 When you need to define an interface, i.e.
@@ -33,19 +33,15 @@ interface User {
 instead do
 
 ```typescript
-class User extends I(class IUser extends G {
-  name = Z.string;
-  age = Z.number;
+class User extends I({
+  name: Z.string,
+  age: Z.number,
 }) {}
 ```
-* `User` is the interface with `name` and `age`.
+* `User` is the interface with a string, `name`, and a number, `age`.
 
-* `I` is a mixin which creates the deserialization and type for `User`.
-
-* `IUser` is the class which contains the type converter functions. This class can
-be named anything.
-
-* `G` is the base class that I accepts.
+* `I` is a mixin which creates type for `User` and attaches the deserialization
+function.
 
 From there you can use `User` like a regular interface. But additionally, you
 can use `new User(your unknown object)` which creates a `User` object if given
@@ -55,17 +51,17 @@ valid data or throws if not.
 const user1: User = { name: 'A', age: 1 }; // succeeds
 const user2: User = { name: 1, age: 1 }; // fails typecheck
 const user3: User = { name: 'A' }; // fails typecheck
-const ioData = {
+const data = {
   name: 100,
   age: 1,
 }
-const user4 = new User(ioData); // throws
+const user4 = new User(data); // throws
 ```
 
 In essence,
 
 ```typescript
-class _ extends I(class _ extends G {
+class _ extends I({
 ```
 
 becomes a substitute for
@@ -81,59 +77,65 @@ checks that it's argument follows that spec.
 
 ```typescript
 import {G, I, Z} from 'presi';
-class objectDef extends I(class IobjectDef extends G {
-  // string
-  stringValue = Z.string;
+class ObjectDef extends I({
+  // stringValue: string
+  stringValue: Z.string,
 
-  // number
-  numberValue = Z.number;
+  // numberValue: number
+  numberValue: Z.number,
 
-  // boolean
-  booleanValue = Z.boolean;
+  // booleanValue: boolean
+  booleanValue: Z.boolean,
 
-  // 'Key'
-  literalKeyValue = Z.literal('Key');
+  // literalKeyValue: 'Key'
+  literalKeyValue: Z.literal('Key'),
 
-  // 100
-  literal100Value = Z.literal(100);
+  // literal100Value: 100
+  literal100Value: Z.literal(100),
 
-  // string | undefined
-  optionalStringValue = Z.optional(Z.string);
+  // optionalStringValue: string | undefined
+  optionalStringValue: Z.optional(Z.string),
 
-  // 'P' | undefined (Z.o is shorthand for Z.optional)
-  optionalLiteralPValue = Z.o(Z.literal('P'));
+  // optionalLiteralPValue: 'P' | undefined (Z.o is shorthand for Z.optional)
+  optionalLiteralPValue: Z.o(Z.literal('P')),
 
-  // number[]
-  arrayOfNumbers = Z.array(Z.number);
+  // arrayOfNumbers: number[]
+  arrayOfNumbers: Z.array(Z.number),
 
-  // [number, number]
-  tupleNumNum = Z.tuple([Z.number, Z.number]);
+  // tupleNumNum: [number, number]
+  tupleNumNum: Z.tuple([Z.number, Z.number]),
 
-  // { z: { z?: string } }
-  nestedObject = Z.object({ z: Z.Object({z: Z.optional(Z.string) }) });
+  // nestedObject: { z: { z?: string } }
+  nestedObject: Z.object({ z: Z.Object({z: Z.optional(Z.string) }) }),
 
-  // string | number
-  stringOrNumber = Z.oneOf(Z.string, Z.number);
+  // stringOrNumber: string | number
+  stringOrNumber: Z.oneOf(Z.string, Z.number),
 
-  // number | null
-  numberOrNull = Z.oneOf(Z.number, Z.null);
+  // numberOrNull: number | null
+  numberOrNull: Z.oneOf(Z.number, Z.null),
 
-  // [string, number, string[]]
-  tripleTuple = Z.tuple([Z.string, Z.number, Z.array(Z.string)]);
+  // tripleTuple: [string, number, string[]]
+  tripleTuple: Z.tuple([Z.string, Z.number, Z.array(Z.string)]),
 }) {}
+
+class objectComposition extends I{
+  // objectDef: ObjectDef
+  objectDef: ObjectDef._,
+}
 ```
 
-## Requirements of the project
+## Project Goals
 1. Structure once philosophy.
 2. Nearly free deserialization.
 3. Can take output from JSON.parse.
-4. Runtime type checking.
-5. Usable defined types in TypeScript.
+4. Run time type checking.
+5. Usable types in TypeScript for compile time type checking.
 
 ### Technical Notes
 * Classes give free structure, type, and function.
 * "Structure once" means the means of deserialization needs incorporated in the
     declaration.
+
 ### Limitations
 * Due to converting a user created interface to generic then back again,
     extraneous keys will not be type checked.
