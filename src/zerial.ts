@@ -180,7 +180,7 @@ export function I<T extends G>(def: T) {
     }
   }
 
-  Object.assign(this, def);
+  Object.assign(C, def);
 
   // Type cast here because clsObj is object merged with class C.
   return C as Constructor<RT<T>> & {_: typeof clsObj} & T;
