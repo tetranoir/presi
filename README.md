@@ -139,3 +139,4 @@ class objectComposition extends I{
 ### Limitations
 * Due to converting a user created interface to generic then back again,
     extraneous keys will not be type checked.
+* Currently does not support reflection.

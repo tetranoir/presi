@@ -68,7 +68,7 @@ function boolean(val: boolean) {
 function optional<T extends F<any>>(typ: T) {
   // tslint:disable-next-line
   function optional(val: ReturnType<T>) {
-    return typ(val) || undefined;
+    return typ(val) ?? undefined;
   }
   return optional as F<ReturnType<T>|undefined>; // dumb you have to explicitly type it
 }
