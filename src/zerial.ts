@@ -74,7 +74,7 @@ function optional<T extends F<any>>(typ: T) {
 }
 
 /** Checks if value is a specific value */
-const valAsLiteral = <T extends Narrowable|undefined|null>(typ: T) => (val: T) => {
+const valAsLiteral = <T extends Narrowable|undefined|null>(typ: T) => function literal(val: T) {
   if (typ !== val) {
     throw `Value ${val} is not ${typ}`;
   }
@@ -91,13 +91,13 @@ export class Z {
   static literal = valAsLiteral;
   static optional = optional;
   static o = Z.optional;
-  static array = <T extends F<any>>(typ: T) => (ary: any) => {
+  static array = <T extends F<any>>(typ: T) => function array(ary: any) {
     if (!Array.isArray(ary)) {
       throw `${ary} is not an array`;
     }
     return ary.map(typ) as ReturnType<T>[]; // dumb that you have to explicitly type it
   }
-  static object = <T extends O<any>>(typeobj: T) => <S extends RT<T>>(obj: S) => {
+  static object = <T extends O<any>>(typeobj: T) => function object<S extends RT<T>>(obj: S) {
     Object.keys(typeobj).forEach(k => {
       if (typeobj[k].name === optional.name) {
         return;
@@ -113,7 +113,7 @@ export class Z {
       return { ...a, [k]: typeobj[k](v) };
     }, {}) as RT<T>;  // dumb that you have to explicitly type it
   }
-  static oneOf = <T extends F<any>[]>(...typs: T) => (val: any) => {
+  static oneOf = <T extends F<any>[]>(...typs: T) => function oneOf(val: any) {
     const v = typs.reduce(<U extends F<any>>(a: AR<T>|undefined, typ: U) => {
       if (a) {
         return a;
@@ -129,7 +129,7 @@ export class Z {
     }
     return v as AR<T>; // dumb that you have to explicitly type it
   }
-  static tuple = <T extends F<any>[] & Tuplize>(typ: T) => (ary: any) => {
+  static tuple = <T extends F<any>[] & Tuplize>(typ: T) => function tuple(ary: any) {
     const array = tuplize(ary);
     if (typ.length !== array.length) {
       throw `Value ${array} is not a tuple of size ${typ.length}`;
